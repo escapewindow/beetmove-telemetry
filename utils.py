@@ -76,11 +76,26 @@ async def put(context, url, headers, abs_filename, session=None):
     return resp
 
 
-async def upload_to_s3(context, s3_key, path):
+def guess_mime_type(path):
+    suffixes = {
+        ".module": "text/plain",
+        ".sha256": "text/plain",
+        ".sha512": "text/plain",
+    }
     mime_type = mimetypes.guess_type(path)[0]
     if not mime_type:
+        for suffix, mime in suffixes.items():
+            if path.endswith(suffix):
+                mime_type = mime
+                break
+    if not mime_type:
         raise Exception(f"Unable to discover valid mime-type for path ({path}), "
-                        "mimetypes.guess_type() returned {mime_type}")
+                        f"mimetypes.guess_type() returned {mime_type}")
+    return mime_type
+
+
+async def upload_to_s3(context, s3_key, path):
+    mime_type = guess_mime_type(path)
     api_kwargs = {
         'Bucket': context.config['bucket_config'][context.bucket]['buckets']['telemetry'],
         'Key': s3_key,

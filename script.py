@@ -2,6 +2,7 @@
 import argparse
 import asyncio
 import aiohttp
+import os
 
 from context import Context
 from utils import (
@@ -22,13 +23,15 @@ APIDOC_PACKAGES = [
 async def move_beets(context):
     """TODO"""
     uploads = []
-    for file, local_path in context.extracted_files.items():
+    for file_, local_path in context.extracted_files.items():
+        file_ = os.path.basename(file_)
         for package_name in APIDOC_PACKAGES:
-            if file.startswith(f"{package_name}-{context.version}"):
+            if file_.startswith(f"{package_name}-{context.version}"):
                 # XXX path?
-                destination = f"maven2/org/mozilla/telemetry/{package_name}/{context.version}/{file}"
+                destination = f"maven2/org/mozilla/telemetry/{package_name}/{context.version}/{file_}"
                 break
         else:
+            print(f"skipping {file_} {local_path}")
             continue
 
         uploads.append(
