@@ -14,10 +14,8 @@ from zip import (
 )
 
 
-GLEAN_PACKAGES = [
-    'glean',
-    'glean-forUnitTests',
-    'glean-gradle-plugin'
+APIDOC_PACKAGES = [
+    'apidoc-plugin',
 ]
 
 
@@ -25,8 +23,9 @@ async def move_beets(context):
     """TODO"""
     uploads = []
     for file, local_path in context.extracted_files.items():
-        for package_name in GLEAN_PACKAGES:
+        for package_name in APIDOC_PACKAGES:
             if file.startswith(f"{package_name}-{context.version}"):
+                # XXX path?
                 destination = f"maven2/org/mozilla/telemetry/{package_name}/{context.version}/{file}"
                 break
         else:
