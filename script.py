@@ -27,8 +27,7 @@ async def move_beets(context):
         file_ = os.path.basename(file_)
         for package_name in APIDOC_PACKAGES:
             if file_.startswith(f"{package_name}-{context.version}"):
-                # XXX path?
-                destination = f"maven2/org/mozilla/telemetry/{package_name}/{context.version}/{file_}"
+                destination = f"maven2/org/mozilla/apilint/{package_name}/{context.version}/{file_}"
                 break
         else:
             print(f"skipping {file_} {local_path}")
