@@ -11,3 +11,7 @@ $ VERSION='22.0.0'; python script.py --release-url "https://github.com/mozilla/g
                                      --bucket maven-production \
                                      --version "$VERSION"
 ```
+
+# Branches
+- [main](https://github.com/escapewindow/beetmove-telemetry/tree/main): @mtabara's work for glean
+- [apidoc](https://github.com/escapewindow/beetmove-telemetry/tree/apidoc): @escapewindow's work for apidoc
